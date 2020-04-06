@@ -1,0 +1,332 @@
+
+{extend name="index"/}
+{block name="title"}
+首页
+{/block}
+{block name="css"}
+<!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/efg/public/static/toast/toastr.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style type="text/css">
+  
+  @import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/css/weather-icons.min.css);
+  
+    #weather_wrapper {
+        width:100%;
+
+        /*margin: 100px auto;*/
+    }
+    .weatherCard {
+        width: 100%;
+        height: 200px;
+        font-family: 'Open Sans';
+        position: relative;
+
+    }
+    .currentTemp {
+        width: 65%;
+        height: 200px;
+        background: #295baa;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 2px 0 0 2px;
+    }
+    .currentWeather {
+        width: 35%;
+        height: 200px;
+        background: #00c0ef;
+
+        margin: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        
+    }
+    .temp {
+        font-size: 80px;
+        text-align: center;
+        display: block;
+        font-weight: 300;
+        color: rgb(255, 255, 255);
+        padding: 20px 0 0;
+    }
+    .location {
+        color: rgb(255, 255, 255);
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 30px;
+        display: block;
+    }
+    .conditions {
+      color: rgb(255, 255, 255);
+        font-family: weathericons;
+        font-size: 80px;
+        display: block;
+        padding: 20px 0 0;
+        text-align: center;
+        border-radius: 0 2px 0 0;
+    }
+    .info {
+        width: 100%;
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #39cccc;
+        font-weight: 700;
+        color: rgb(255, 255, 255);
+        text-align: center;
+        border-radius: 0 0 2px 0;
+    }
+    .rain {
+        width: 50%;
+        position: absolute;
+        left: 10px;
+        word-spacing: 60px;
+        top: 3px;
+    }
+    .rain::before {
+        display: block;
+        content: '\f04e';
+        font-family: weathericons;
+        font-size: 40px;
+        left: 6px;
+        top: -4px;
+        position: absolute;
+    }
+    .wind {
+        width: 50%;
+        right: -10px;
+        position: absolute;
+        word-spacing: 60px;
+        top: 3px;
+    }
+    .wind::before {
+        display: block;
+        content: '\f050';
+        font-family: weathericons;
+        font-size: 25px;
+        left: -10px;
+        position: absolute;
+        top: 5px;
+    }
+  </style>
+{/block}
+{block name="content"}
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        首页
+        <small>数据</small>
+      </h1>
+      
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>{$checked}个</h3>
+
+              <p>待审核项目</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-eye-disabled"></i>
+            </div>
+            <a href="/efg/public/index/review/listitemdata" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>{$newitem}个</h3>
+
+              <p>一周内新增项目</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-ios-photos"></i>
+            </div>
+            <a href="/efg/public/index/review/listitemdata" class="small-box-footer">更多信息<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>{$newuser}位</h3>
+
+              <p>今日新注册用户</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="/efg/public/index/user/listalldata" class="small-box-footer">更多信息<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>{$total}位</h3>
+
+              <p>总用户数</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-ios-people"></i>
+            </div>
+            <a href="/efg/public/index/user/listalldata" class="small-box-footer">更多信息<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-maroon-active">
+            <span class="info-box-icon"><i class="ion ion-university"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">大学数目</span>
+              <span class="info-box-number">31所</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+                  <span class="progress-description">
+                    <a href="/efg/public/index/university/listalldata" class="small-box-footer" style="color:#fff">更多信息<i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          <div class="info-box bg-purple">
+              <span class="info-box-icon"><i class="ion ion-ios-pie-outline"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">行业数目</span>
+                <span class="info-box-number">33个</span>
+
+                <div class="progress">
+                  <div class="progress-bar" style="width:100%"></div>
+                </div>
+                    <span class="progress-description">
+                      <a href="/efg/public/index/field/listalldata" class="small-box-footer" style="color:#fff">更多信息<i class="fa fa-arrow-circle-right"></i></a>
+                    </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+         	  <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-teal">
+              <div class="widget-user-image">
+                <img class="img-circle" src="/efg/public/uploads/admin/avatars/{$Admin->getData('admin_id')}/avatar.jpg" alt="User Avatar">
+              </div>
+              <!-- /.widget-user-image -->
+              <h3 class="widget-user-username">{$Admin->getData("admin_name")}</h3>
+              <h5 class="widget-user-desc">{$Admin->getData("admin_title")}</h5>
+            </div>
+            <div class="box-footer no-padding">
+              <ul class="nav nav-stacked">
+                <li><a href="javascript:void(0)">用户名 <span class="pull-right badge bg-blue">{$Admin->getData("admin_username")}</span></a></li>
+                <li><a href="javascript:void(0)">权限级别 <span class="pull-right badge bg-aqua">{eq name="$Admin->getData('admin_level')" value="0"}管理员{else/}系统管理员{/eq}</span></a></li>
+                <li><a href="javascript:void(0)">已审批项目 <span class="pull-right badge bg-green">{$adminreviewcount}个</span></a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        <!-- /.col -->
+       
+        <div class="col-md-6">
+         <div id="weather_wrapper">
+            <div class="weatherCard">
+              <div class="currentTemp">
+                  <span class="temp">{$weather.weather.temperature}&deg;</span>
+                  <span class="location">上海 &nbsp; {$weather.weather.info}</span>
+              </div>
+              <div class="currentWeather">
+                  <span class="conditions">
+                    {switch name="$weather.weather.info"}
+                        {case value="晴"}&#xf00d;{/case}
+                        {case value="多云"}&#xf002;{/case}
+                        {case value="阴"}&#xf013;{/case}
+                        {case value="阵雨|小雨"}&#xf019;{/case}
+                        {case value="雷阵雨"}&#xf01d;{/case}
+                        {case value="雨夹雪"}&#xf017;{/case}
+                        {case value="中雨|大雨|暴雨|大暴雨|特大暴雨|冻雨|小到中雨|中到大雨|大到暴雨|暴雨到大暴雨|大暴雨到特大暴雨"}&#xf01c;{/case}
+                        {case value="阵雪|小雪|中雪|大雪|暴雪|小到中雪|中到大雪|大到暴雪"}&#xf01b;{/case}
+                        {case value="雾|霾"}&#xf014;{/case}
+                        {case value="沙尘暴|浮尘|扬沙|强沙尘暴"}&#xf082;{/case}
+                        {default /}default
+                    {/switch}
+                  
+                </span>
+                  <div class="info">
+                      <span class="rain">湿度 {$weather.weather.humidity}%</span>
+                      <span class="wind">{$weather.wind.direct} {$weather.wind.power}</span>
+                  </div>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="row"></div>
+    </section>
+    <!-- /.content -->
+  </div>
+{/block}
+{block name="js"}
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/efg/public/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/efg/public/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/efg/public/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/efg/public/static/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/efg/public/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/efg/public/static/dist/js/demo.js"></script>
+
+<script src="/efg/public/static/toast/toastr.min.js"></script>
+
+{/block}

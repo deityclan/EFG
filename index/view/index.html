@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{block name="title"}标题{/block}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+ 	<link rel="shortcut icon" href="/efg/public/static/img/ico.ico" type="image/x-icon">
+  {block name="css"}CSS link{/block}
+  <style type="text/css">
+
+    body {
+        padding-right: 0px !important; 
+        font-family: Helvetica, 'Hiragino Sans GB', 'STXihei', '华文细黑', Arial, sans-serif;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+        }
+    *.modal-open {
+        overflow-y: scroll;
+        padding-right: 0 !important;
+    }
+    .active{
+      background-color: #d2d6de;
+    }
+</style>
+
+</head>
+<body class="hold-transition skin-blue-light sidebar-mini">
+<div class="wrapper" style="overflow-y: hidden;overflow-x: hidden;">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="/efg/public/index/index/dashboard" class="logo" >
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img src="/efg/public/static/img/bluelogo.png"></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><img src="/efg/public/static/img/bluelogo-huge.png"></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="javascript:void(0)" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">缩略开关</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i> 待处理
+              <span class="label label-danger"><div class="uncheck-item-count"></div></span>
+            </a>
+            <!--<ul class="dropdown-menu">
+              <li class="header">您有<label class="uncheck-item-count"></label>个新项目未审批</li>
+              <li>
+                <ul class="menu">
+                  <li>
+                    <a href="javascript:void(0)">
+                      <i class="fa fa-users text-aqua"></i>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </li>
+              <li class="footer"><a href="/efg/public/index/review/listitemdata">查看全部</a></li>
+            </ul>-->
+          </li>
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user-menu">
+            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="/efg/public/uploads/admin/avatars/avatar.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">管理员</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="/efg/public/uploads/admin/avatars/avatar.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  <label class="admin-name"></label> - 管理员
+                  <small>创业基金会办公室助理</small>
+                </p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <!--<div class="box-footer no-padding">
+                  <ul class="nav nav-stacked">
+                    
+                  </ul>
+                </div>-->
+                <div class="pull-left" style="margin-top:20px">
+                  <a name="jumpToProfile" class="btn btn-default btn-flat"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;账号资料</a>
+                </div>
+                <div class="pull-right" style="margin-top:20px">
+                  <a href="javascript:void(0)" class="btn btn-default btn-flat btn-logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;&nbsp;退出系统</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="javascript:void(0)" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <!--<div class="user-panel">
+        <div class="pull-left image">
+          <img src="/efg/public/uploads/admin/avatars/avatar.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p><label class="admin-name"></label></p>
+          <a href="javascript:void(0)"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+      </div>-->
+      <!-- search form -->
+      <form class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="搜索..." disabled="disabled">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="index-dashboard">
+          <a href="/efg/public/index/index/dashboard">
+            <i class="fa fa-bookmark-o"></i> <span>首页</span>
+            </span>
+          </a>
+          
+        </li>
+        <li class="treeview user admin">
+          <a href="javascript:void(0)">
+            <i class="fa fa-user-circle-o"></i> <span>用户</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="user-selall"><a href="/efg/public/index/user/selall"><i class="fa fa-circle-o"></i> 用户列表</a></li>   
+            <li class="admin-selall"><a href="/efg/public/index/admin/selall"><i class="fa fa-circle-o"></i> 管理员列表</a></li>       
+          </ul>
+        </li>
+        <li class="treeview review">
+          <a href="javascript:void(0)">
+            <i class="fa fa-sitemap"></i>
+            <span>项目及审核</span>
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right"><div class="uncheck-item-count"></div></span>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="review-listitemdata"><a href="/efg/public/index/review/listitemdata"><i class="fa fa-circle-o"></i>项目列表</a></li>
+            <li class="review-selall"><a href="/efg/public/index/review/selall"><i class="fa fa-circle-o"></i>审核记录</a></li>
+          </ul>
+          
+        </li>
+        <li class="treeview university field">
+          <a href="javascript:void(0)">
+            <i class="fa fa-clone"></i>
+            <span>数据配置</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="university-selall"><a href="/efg/public/index/university/selall"><i class="fa fa-circle-o"></i> 大学</a></li>
+            <li class="field-selall"><a href="/efg/public/index/field/selall"><i class="fa fa-circle-o"></i> 行业领域</a></li>
+          </ul>
+        </li>
+        
+        <li class="header">颜色提示</li>
+        <li><a href="javascript:void(0)"><i class="fa fa-circle-o text-red"></i> <span>超过10天未审核</span></a></li>
+        <li><a href="javascript:void(0)"><i class="fa fa-circle-o text-yellow"></i> <span>超过3天未审核</span></a></li>
+        <li><a href="javascript:void(0)"><i class="fa fa-circle-o text-aqua"></i> <span>有新项目未审核</span></a></li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    
+      {block name="content"}内容{/block}
+    
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>版本号</b> v1.0.0
+    </div>
+    <strong>Copyright &copy; 2020-2022 <a href="http://www.stefg.org/">上海市大学生科技创业基金会</a></strong> 版权所有
+    
+  </footer>
+
+ 
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+
+
+{block name="js"}js script{/block}
+<script>
+  $.fn.dataTable.defaults.oLanguage = {
+    "sProcessing": "处理中...",
+    "sLengthMenu": "显示 _MENU_ 项结果",
+    "sZeroRecords": "没有匹配结果",
+    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+    "sInfoPostFix": "",
+    "sSearch": "搜索：",
+    "sUrl": "",
+    "sEmptyTable": "表中数据为空",
+    "sLoadingRecords": "载入中...",
+    "sInfoThousands": ",",
+    "oPaginate": {
+        "sFirst": "首页",
+        "sPrevious": "上页",
+        "sNext": "下页",
+        "sLast": "末页"
+    },
+    "oAria": {
+        "sSortAscending": ": 以升序排列此列",
+        "sSortDescending": ": 以降序排列此列"
+    }
+};
+function serializeToObject(jsonArray){
+     var o = {};
+     $.each(jsonArray, function() {
+     if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+      o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+     } else {
+      o[this.name] = this.value || '';
+     }
+     });
+     return o;
+}
+
+$.ajax({
+    type : "GET",
+    url : "{:url('index/count/uncheckItem')}",
+    data : '',
+    success : function(result) {
+      	$(".uncheck-item-count").each(function(){
+		      $(this).text(result)
+		    });
+        if(result>0){
+          $(".review-listitemdata a").addClass("text-aqua");
+        }
+    },
+    error : function(e){
+        console.log(e);
+    }
+});
+$(".btn-logout").click(function(){
+    $.ajax({
+        type : "GET",
+        url : "{:url('login/login/logout')}",
+        data : '',
+        success : function(result) {
+          if(result.code==1){
+              toastr.success('马上离开系统', '注销成功')
+              setTimeout(function(){window.location.href = "{:url('login/login/index')}"},1500);
+          }else{
+              toastr.error(result.msg, '登录失败');
+          }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+})
+
+
+var admin=JSON.parse(decodeURIComponent(getCookie('admin')));
+$(".admin-name").each(function(){
+  $(this).text(admin.admin_name)
+});
+$("a[name='jumpToProfile']").attr("href","/efg/public/index/index/dashboard");
+var url=window.location.href;
+var url_array=url.split("/");
+var page_params1=url_array[url_array.length-2];
+var page_params2=url_array[url_array.length-1];
+$("."+page_params1).addClass("active");
+$("."+page_params1+"-"+page_params2).addClass("active");
+
+function getCookie(name){
+    var strcookie = document.cookie;//获取cookie字符串
+    var arrcookie = strcookie.split("; ");//分割
+    //遍历匹配
+    for ( var i = 0; i < arrcookie.length; i++) {
+        var arr = arrcookie[i].split("=");
+        if (arr[0] == name){
+            return arr[1];
+        }
+    }
+    return "";
+}
+
+
+</script>
+
+</body>
+</html>

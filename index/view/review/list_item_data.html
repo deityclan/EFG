@@ -1,0 +1,400 @@
+
+{extend name="index"/}
+{block name="title"}
+用户
+{/block}
+{block name="css"}
+<!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/efg/public/static/toast/toastr.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
+{/block}
+{block name="content"}
+
+<section class="content-header">
+  <h1>项目<small>列表</small></h1><!--需要改动：标题-->
+  <!--<ol class="breadcrumb">
+    <li><button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#add-modal"><i class="glyphicon glyphicon-plus"></i>&nbsp;新增数据</button>  <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;批量删除</button></li>
+  </ol>-->
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="list" class="table table-bordered table-striped" style="white-space: nowrap;" >
+                        <thead>
+                            <tr>
+                              <!--<th><input type="checkbox" id="check_all"/></th>-->
+                              <th>用户姓名</th><!--需要改动，th-->
+                              <th>创业行业</th>
+                              <th>申报项目</th>
+                              <!--<th>上传文件</th>-->
+                              <th>项目状态</th>
+                              
+                              <th>申报时间</th>
+                              <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody><!--需要改动volist-->
+                            {volist name="Users" id="User" key="key"}
+                            <tr>
+                                <!--<td><input type="checkbox" name="id" value="{$User->getData('user_id')}" /></td>-->
+                                <td>{$User->getData('user_name')}</td>
+                                <td>{$User->Field->field_name}</td>
+                                <td>{$User->getData('user_itemname')}</td>
+                                <!--<td data-id="{$User->getData('user_wechatID')}" data-file="{$User->getData('user_itemfile')}" ><button class="btn btn-xs download_file" data-url="{$User->user_itemfile[0]}">2020年上海市研究生创新创业能力培养计划项目申请书</button><br><button class="btn btn-xs download_file" data-url="{$User->user_itemfile[1]}">学生证电子扫描</button><br><button class="btn btn-xs download_file" data-url="{$User->user_itemfile[2]}">拟创业项目商业计划书</button><br><button class="btn btn-xs download_file" data-url="{$User->user_itemfile[3]}">导师同意学生创业文件</button></td>-->
+                                <td>{$User->user_itemstatus}</td>
+                                
+                                <td>{$User->create_time}</td>                           
+                                <td>
+                                  
+                                    <button class="btn btn-xs btn-primary btn-block edit-submit" data-id="{$User->getData('user_id')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;审核</button>
+                                    <button class="btn btn-xs btn-success btn-block get-review-submit" data-id="{$User->getData('user_id')}"><i class="glyphicon glyphicon-search"></i>&nbsp;记录</button>
+                                    <button class="btn btn-xs btn-info btn-block download-files" data-id="{$User->getData('user_id')}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;打包下载附件</button>
+                                 
+                                </td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--更新数据modal-->
+<div class="modal fade" id="update-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="update-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">项目审核</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                      <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                              <input type="hidden" value="0" name="admin_id">
+                              <input type="hidden" value="0" name="user_id">
+                                <div class="col-sm-3"><label style="margin-top:6px">审核阶段</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="review_stage">
+                                      <option selected="selected" disabled="disabled" style="display:none" value=""></option>
+                                      <option value="0">初审</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">审核结果</label></div>
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="review_result">
+                                    <option selected="selected" disabled="disabled" style="display:none" value=""></option>
+                                      <option value="1">通过</option>
+                                      <option value="0">不通过</option>
+                                  </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">点评</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><textarea name="review_proposal" class="form-control" rows="3" placeholder="输入点评，可为空"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left " data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary update-submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--删除数据提示modal-->
+<div class="modal modal-danger fade" id="modal-danger">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">危险操作提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除该条记录吗？</p>
+            </div>
+            <div class="modal-footer" style="border:none">
+                <input id="delete_id" type="hidden" value="" />
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline delete-submit">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--列表item-review的modal-->
+<div class="modal fade bs-example-modal-lg" id="item-review-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="update-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">该项目的审核记录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box">
+                      <div class="form-horizontal">
+                        <div class="box-body">
+                           <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                              <th style="width: 20px">序号</th>
+                              <th style="width: 40px">审核阶段</th>
+                              <th style="width: 20px">审核结果</th>
+                              <th style="width: 120px">批注</th>
+                              <th style="width: 40px">审核时间</th>
+                              <th style="width: 20px">审核人</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td colspan="6" style="text-align: center">暂无记录</td>
+                            </tr>
+                            
+                          </tbody></table>
+                           
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left " data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/efg/public/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/efg/public/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/efg/public/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/efg/public/static/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/efg/public/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/efg/public/static/dist/js/demo.js"></script>
+
+<script src="/efg/public/static/toast/toastr.min.js"></script>
+<script>
+$(function () {
+    //初始化表格，需要改动：order属性从第几列开始排序
+    $('#list').DataTable({
+        "columnDefs":[{targets:0,"orderable":false}],
+        "order":[[4,'dsc']],
+        "iDisplayLength":15,
+        "aLengthMenu":[15,30,50,100],
+        //"scrollX":true,
+        //"bAutoWidth":true,
+    });
+    //初始化toastr
+    toastr.options = {
+      "closeButton":false,
+      "debug":false,
+      "newestOnTop":false,
+      "progressBar":false,
+      "rtl":false,
+      "positionClass":"toast-top-center",
+      "preventDuplicates":false,
+      "onclick":null,
+      "showDuration":200,
+      "hideDuration":200,
+      "timeOut":1600,
+      "extendedTimeOut":200,
+      "showEasing":"swing",
+      "hideEasing":"linear",
+      "showMethod":"fadeIn",
+      "hideMethod":"fadeOut",
+    };
+})
+  
+//新增数据的ajax方法
+$(".add-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#add-form").serializeArray();
+    var data=serializeToObject(form_data);
+    console.log(data)
+    $.ajax({
+        type : "POST",
+        url : "{:url('save')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已新增一条数据', '操作成功！')
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+})
+
+//获取item-review数据的ajax方法
+$(".get-review-submit").click(function(){
+    var data=$(this).data("id");
+
+    $.ajax({
+        type : "POST",
+        url : "{:url('listitemreviewdata')}",
+        data : {"user_id":data},
+        success : function(result) {
+            console.log(result);
+            if(result.status==1){
+              $("#item-review-modal table tbody").empty();
+
+              reviews=result.reviews;
+
+              for(let index in reviews){
+                var number=Number(index)+1;
+                var element="<tr>"+"<td>"+number+"</td><td>"+reviews[index]["review_stage"]+"</td><td>"+reviews[index]["review_result"]+"</td><td>"+reviews[index]["review_proposal"]+"</td><td>"+reviews[index]["review_time"]+"</td><td>"+reviews[index].admin_name+"</td></tr>";
+                $("#item-review-modal table tbody").append(element);
+              }
+
+              $("#item-review-modal").modal("show");
+
+            }else{
+              $("#item-review-modal table tbody").empty();
+              var element='<tr><td colspan="6" style="text-align: center">暂无记录</td>';
+              $("#item-review-modal table tbody").append(element);
+              $("#item-review-modal").modal("show");
+            }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+})
+
+//删除事件的ajax方法
+$(".delete-button").click(function(){
+    $("#delete_id").val($(this).data("id"));
+})
+
+$(".delete-submit").click(function(){
+    var form_data=$("#delete_id").val();
+    var that=$("input[type='checkbox'][value='"+form_data+"']");
+    $("#modal-danger").modal("hide");
+    $.ajax({
+        type : "POST",
+        url : "{:url('delete')}",
+        data : {"id":form_data},
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已删除一条数据', '操作成功！');
+                that.parents("tr").remove();
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+$(".download-files").click(function(){
+    var data=$(this).data("id");
+    window.open("{:url('index/user/downloadfiles')}?id="+data);
+})
+
+$(".download_file").click(function(){
+    var data=$(this).data("url");
+    window.open("{:url('index/user/downloadfile')}?url="+data);
+   
+})
+
+//编辑按钮的方法
+$(".edit-submit").click(function(){
+    var form_data=$(this).data("id");
+    $("#update-form input[name='admin_id']").val(admin.admin_id);
+    $("#update-form input[name='user_id']").val(form_data);
+    $("#update-modal").modal("show");
+})
+
+//提交审核的ajax方法：改动较大
+$(".update-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#update-form").serializeArray();
+    var data=serializeToObject(form_data);
+    
+    var text = data.review_proposal; 
+    data.review_proposal = text.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '); //转换格式
+    
+
+    $.ajax({
+        type : "POST",
+        url : "{:url('index/review/save')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已审核一个项目', '审核成功');
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+//批量删除的全选checkbox事件
+$("#check_all").click(function(){
+    if($(this).prop("checked")){
+        $("input[type='checkbox']").prop("checked",true);
+    }else{
+        $("input[type='checkbox']").prop("checked",false);
+    }
+})
+
+</script>
+
+{/block}

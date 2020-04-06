@@ -1,0 +1,121 @@
+
+{extend name="index"/}
+{block name="title"}
+大学
+{/block}
+{block name="css"}
+<!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/skins/_all-skins.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+{/block}
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    大学
+    <small>列表</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a class="btn btn-danger btn-sm" href="{:url('delete?id=' . $university->getData('university_id'))}"><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</a></li>
+   
+  </ol>
+</section>
+
+    <!-- Main content -->
+<section class="content">
+  <div class="row">
+        <div class="col-xs-12">
+          
+
+          <div class="box">
+            
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>大学名称</th>
+                  <th>添加时间</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="universitys" id="university" key="key"}
+                <tr>
+                    <td></td>
+                    <td>{$university->getData('university_name')}</td>
+                    <td>{$university->create_time}</td>
+                    <td>{$university->update_time}</td>
+                    <td><a class="btn btn-danger btn-sm" href="{:url('delete?id=' . $university->getData('university_id'))}"><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</a>&nbsp;<a class="btn btn-sm btn-primary" href="{:url('edit?id=' . $university->getData('university_id'))}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</a></td>
+                </tr>
+                {/volist}
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+{block name="js"}
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/efg/public/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/efg/public/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/efg/public/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/efg/public/static/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/efg/public/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/efg/public/static/dist/js/demo.js"></script>
+<script>
+  $(function () {
+    $('#example1').DataTable(
+      
+      )
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
+
+{/block}

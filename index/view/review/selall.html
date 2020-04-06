@@ -1,0 +1,466 @@
+
+{extend name="index"/}
+{block name="title"}
+项目
+{/block}
+{block name="css"}
+<!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/efg/public/static/toast/toastr.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
+{/block}
+{block name="content"}
+
+<section class="content-header">
+  <h1>审核<small>列表</small></h1><!--需要改动：标题-->
+  <ol class="breadcrumb">
+    <li><!--<button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#add-modal"><i class="glyphicon glyphicon-plus"></i>&nbsp;新增数据</button>  <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;批量删除</button>--></li>
+  </ol>
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="list" class="table table-bordered table-striped" style="white-space:nowrap;">
+                        <thead>
+                            <tr>
+                              <!--<th><input type="checkbox" id="check_all"/></th>-->
+                              <th>审核时间</th><!--需要改动，th-->
+                              <th>审批阶段</th>
+                              <th>审核结果</th>
+                              <th>审核意见</th>
+                              <th>项目名称</th>
+                              <th>项目负责人</th>
+                              <th>审核人</th>
+                              <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody><!--需要改动volist-->
+                            {volist name="datas" id="Review" key="key"}
+                            <tr>
+                                <!--<td><input type="checkbox" name="id" value="{$Review->getData('review_id')}" /></td>-->
+                                <td>{$Review->getData('review_time')}</td>
+                                <td>{$Review->review_stage}</td>
+                                <td>{$Review->review_result}</td>
+                                <td style="word-break：break-all;">{$Review->getData('review_proposal')}</td>
+                                <td>{$Review->User->user_itemname}</td>
+                                <td>{$Review->User->user_name}</td>
+                                <td>{$Review->Admin->admin_name}</td>                      
+                                <td><button class="btn btn-danger btn-xs delete-button" data-id="{$Review->getData('review_id')}" data-toggle="modal" data-target="#modal-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</button></td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--新增数据modal-->
+<div class="modal fade" id="add-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="add-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加新数据</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-success">
+                        <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">用户姓名</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_name" placeholder="请输入用户姓名" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">手机号</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_phone" placeholder="请输入手机号" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">电子邮箱</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_email" placeholder="请输入电子邮箱" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">学校</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="university_id">
+                                    {volist name="Users" id="User"}
+                                        <option value="{$User['user_id']}">{$User['user_name']}</option>
+                                    {/volist}
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">微信ID</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_wechatID" placeholder="请输入微信" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">研究生计划年份</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="user_applyYear">
+                                    <option value="2020">2020年</option>
+                                    <option value="2021">2021年</option>
+                                    <option value="2022">2022年</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">学历</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_degree" placeholder="请输入学历" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">项目名称</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_itemname" placeholder="请输入申报的项目名称" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">项目行业</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="field_id">
+                                    {volist name="Admins" id="Admin"}
+                                        <option value="{$Admin['admin_id']}">{$Admin['admin_name']}</option>
+                                    {/volist}
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">附件</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_itemfile" placeholder="请输入申报的项目名称" required="required"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-success add-submit">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--更新数据modal-->
+<div class="modal fade" id="update-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="update-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑数据</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                      <div class="form-horizontal">
+                        <div class="box-body">
+                          <input type="hidden" name="id" value="0">
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">用户姓名</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_name" placeholder="请输入用户姓名" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">手机号</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_phone" placeholder="请输入手机号" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">电子邮箱</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_email" placeholder="请输入电子邮箱" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">学校</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="university_id">
+                                    {volist name="Users" id="User"}
+                                        <option value="{$User['user_id']}">{$User['user_name']}</option>
+                                    {/volist}
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">微信ID</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_wechatID" placeholder="请输入微信" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">研究生计划年份</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="user_applyYear">
+                                    <option value="2020">2020年</option>
+                                    <option value="2021">2021年</option>
+                                    <option value="2022">2022年</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">学历</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_degree" placeholder="请输入学历" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">项目名称</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_itemname" placeholder="请输入申报的项目名称" required="required"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">项目行业</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9">
+                                  <select class="form-control" name="field_id">
+                                    {volist name="Admins" id="Admin"}
+                                        <option value="{$Admin['admin_id']}">{$Admin['admin_name']}</option>
+                                    {/volist}
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label style="margin-top:6px">附件</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-9"><input type="text" class="form-control" name="user_itemfile" placeholder="请输入申报的项目名称" required="required"></div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left " data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary update-submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--删除数据提示modal-->
+<div class="modal modal-danger fade" id="modal-danger">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">危险操作提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除该条记录吗？</p>
+            </div>
+            <div class="modal-footer" style="border:none">
+                <input id="delete_id" type="hidden" value="" />
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline delete-submit">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/efg/public/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/efg/public/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/efg/public/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/efg/public/static/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/efg/public/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/efg/public/static/dist/js/demo.js"></script>
+
+<script src="/efg/public/static/toast/toastr.min.js"></script>
+<script>
+$(function () {
+    //初始化表格，需要改动：order属性从第几列开始排序
+    $('#list').DataTable({
+        "columnDefs":[{targets:0,"orderable":false}],
+        "order":[[4,'dsc']],
+        "iDisplayLength":15,
+        "aLengthMenu":[15,30,50,100],
+
+        "columnDefs":[{
+          "targets": [3],
+          "width":"120px",
+            render: function (data, type, full, meta) {
+                 // data = data.replace(/<br/>/g, '\n').replace(/ /g, '\s');  //转换格式
+
+                    if (data) {
+                        if (data.length > 20) {
+                          var element=data.substr(0, 14) + " <a href='javascript:void(0);' class='showAll' data-id='"+data+"'> ...</a> ";
+
+                          return element;
+                        }else{
+                            return data;
+                        }
+                    }else {
+                            return "";
+                    }
+                }
+            }
+        ]
+    });
+
+    //初始化toastr
+    toastr.options = {
+      "closeButton":false,
+      "debug":false,
+      "newestOnTop":false,
+      "progressBar":false,
+      "rtl":false,
+      "positionClass":"toast-top-center",
+      "preventDuplicates":false,
+      "onclick":null,
+      "showDuration":200,
+      "hideDuration":200,
+      "timeOut":1600,
+      "extendedTimeOut":200,
+      "showEasing":"swing",
+      "hideEasing":"linear",
+      "showMethod":"fadeIn",
+      "hideMethod":"fadeOut",
+    };
+})
+$("body").on("click",".showAll",function(){
+    $(this).parent().css("white-space","normal");
+    var data=$(this).data("id");
+    $(this).parent().text(data);
+});
+
+
+//新增数据的ajax方法
+$(".add-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#add-form").serializeArray();
+    var data=serializeToObject(form_data);
+    console.log(data)
+    $.ajax({
+        type : "POST",
+        url : "{:url('save')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已新增一条数据', '操作成功！')
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+})
+
+//删除事件的ajax方法
+$(".delete-button").click(function(){
+    $("#delete_id").val($(this).data("id"));
+})
+
+$(".delete-submit").click(function(){
+    var form_data=$("#delete_id").val();
+    var that=$(".delete-button[data-id='"+form_data+"']");
+    $("#modal-danger").modal("hide");
+    $.ajax({
+        type : "POST",
+        url : "{:url('delete')}",
+        data : {"id":form_data},
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已删除一条数据', '操作成功！');
+                that.parents("tr").remove();
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+//编辑按钮的方法
+$(".edit-submit").click(function(){
+    var form_data=$(this).data("id");
+    $.ajax({
+        type : "POST",
+        url : "{:url('edit')}",
+        data : {"id":form_data},
+        success : function(result) {
+            if(result.code==1){
+                $("#update-form input[name='id']").val(result.data.user_id);
+                $("#update-form input[name='user_name']").val(result.data.user_name);
+                $("#update-form input[name='user_phone']").val(result.data.user_phone);
+                $("#update-form input[name='user_wechatID']").val(result.data.user_wechatID);
+                $("#update-form input[name='user_email']").val(result.data.user_email);
+                $("#update-form input[name='user_itemname']").val(result.data.user_itemname);
+                $("#update-form input[name='user_itemfile']").val(result.data.user_itemfile);
+                $("#update-form input[name='user_degree']").val(result.data.user_degree);
+                $("#update-form select[name='user_applyYear']").val(result.data.user_applyYear);
+                $("#update-form select[name='university_id']").val(result.data.university_id);
+                $("#update-form select[name='field_id']").val(result.data.field_id);
+                $("#update-modal").modal("show");
+            }else{
+                $(".fail-tip").text(result.msg);
+                $("#fail-modal-delete").modal("show");
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+//保存数据的ajax方法
+$(".update-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#update-form").serializeArray();
+    var data=serializeToObject(form_data);
+    $.ajax({
+        type : "POST",
+        url : "{:url('update')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已更新一条数据', '操作成功！');
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            }
+        },
+        error : function(e){
+        }
+    });
+})
+
+//批量删除的全选checkbox事件
+$("#check_all").click(function(){
+    if($(this).prop("checked")){
+        $("input[type='checkbox']").prop("checked",true);
+    }else{
+        $("input[type='checkbox']").prop("checked",false);
+    }
+})
+
+
+
+</script>
+
+{/block}

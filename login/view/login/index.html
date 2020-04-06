@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>登录</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="/efg/public/static/img/ico.ico" type="image/x-icon">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="/efg/public/static/plugins/iCheck/square/blue.css">
+
+  <link rel="stylesheet" href="/efg/public/static/toast/toastr.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link href='http://cdn.repository.webfont.com/webfonts/nomal/136611/19673/5e720925f629d80f54070bd9.css' rel='stylesheet' type='text/css' />
+  <style type="text/css">
+      .login-box{
+        margin:4% auto;
+        margin-top:0;
+      }
+      .login-page{
+           /* background-image: url("/efg/public/static/img/bluelogo-huge.png");
+            background-repeat:no-repeat;
+            background-size:100% 100%; 
+            -moz-background-size:cover;
+            overflow-x:hidden;*/
+            background-color: #295baa;
+         }
+      .login-box-body{
+        background-color:rgba(80,80,80,0.9);
+        color:#ffffff;
+
+      }
+      .btn-block{
+        margin-top: 5px;
+      }
+      .popover-title,.popover-content{
+        color:#666;
+      }
+
+      .form-control::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color:#666;
+      }
+      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+         color:#ffffff;
+      }
+      ::-moz-placeholder { /* Mozilla Firefox 19+ */
+         color:#ffffff;
+      }
+      .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+         color:#ffffff;
+      }
+      .form-control::-ms-input-placeholder { /* Microsoft Edge */
+         color:#ffffff;
+      }
+      
+   </style>
+</head>
+<body class="hold-transition login-page" scroll="no">
+<div class="login-box">
+  <div class="login-logo" style="margin-bottom: 0">
+    <div style="color:#fff;background-color:transparent;"><img src="/efg/public/static/img/bluelogo.png" style="width:75%;height:auto;"></div>
+
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body" name="login-box" >
+    <p class="login-box-msg" style="font-size:18px;font-family:'jdzhonyuanjian1f929d0161215a3';">信息化服务平台</p>
+
+    <form action="{:url('login')}" method="post">
+      <div class="form-group has-feedback">
+        <input name="admin_username" type="text" class="form-control" placeholder="用户名">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="admin_password" type="password" class="form-control" placeholder="密码">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox">&nbsp;&nbsp;记住账号
+            </label>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="button" class="btn btn-primary btn-block btn-flat">登录</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+    <div class="social-auth-links text-center">
+      <p>- 或者 -</p>
+      <a href="javascript:void(0)" class="btn btn-block btn-danger btn-flat" data-toggle="popover" title="提示" data-trigger="focus" data-content="目前尚未开放密码找回功能，请联系管理员更新你的密码！">我忘记了密码</a>
+      <a href="javascript:void(0)" class="btn btn-block btn-success btn-flat" data-toggle="popover" title="提示" data-trigger="focus" data-content="目前尚未开放注册功能，请联系管理员手动添加帐号！">注册新账号</a>
+    </div>
+    <!-- /.social-auth-links -->
+
+    <!--<span>版本号：v1.0.1</span><br>-->
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="/efg/public/static/plugins/iCheck/icheck.min.js"></script>
+
+<script src="/efg/public/static/toast/toastr.min.js"></script>
+<script>
+  $(function () {
+    var username=getCookie("name");
+    var pwd=getCookie("password");
+
+    if(username!=null){
+      $("input[name='admin_username']").val(username);
+      $("input[name='admin_password']").val(pwd);
+      $("input[type='checkbox']").prop("checked",true);
+    }
+
+    //初始化toastr
+    toastr.options = {
+      "closeButton":false,
+      "debug":false,
+      "newestOnTop":false,
+      "progressBar":false,
+      "rtl":false,
+      "positionClass":"toast-top-center",
+      "preventDuplicates":false,
+      "onclick":null,
+      "showDuration":200,
+      "hideDuration":200,
+      "timeOut":1600,
+      "extendedTimeOut":200,
+      "showEasing":"swing",
+      "hideEasing":"linear",
+      "showMethod":"fadeIn",
+      "hideMethod":"fadeOut",
+    };
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' /* optional */
+    });
+    $('[data-toggle="popover"]').popover()
+  });
+  $(document.body).css({
+   "overflow-x":"hidden",
+   "overflow-y":"hidden"
+ });
+function serializeToObject(jsonArray){
+     var o = {};
+     $.each(jsonArray, function() {
+     if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+      o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+     } else {
+      o[this.name] = this.value || '';
+     }
+     });
+     return o;
+}
+  $("form button").click(function(){
+    var form_data=$("form").serializeArray();
+    var data=serializeToObject(form_data);
+    $.ajax({
+        type : "POST",
+        url : "{:url('login/login/login')}",
+        data : data,
+        success : function(result) {
+          //console.log(result)
+          if(result.code==1){
+              toastr.success('马上进入系统', '登录成功')
+              if($("input[type='checkbox']").prop("checked")){
+                var username = $("input[name='admin_username']").val();
+                var password = $("input[name='admin_password']").val();
+                setCookie("name",username);
+                setCookie("password",password);
+               
+                console.log(document.cookie)
+              }else{
+                delCookie('name');
+                delCookie('password');
+              }
+              //console.log(getCookie("password"))
+              setTimeout(function(){window.location.href = "{:url('index/index/dashboard')}"},1500);
+          }else{
+              toastr.error(result.msg, '登录失败');
+          }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+  })
+
+  function setCookie(name,value){
+    var Days = 30;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+  }
+
+  function getCookie(name){
+      var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+      if(arr=document.cookie.match(reg))
+          return unescape(arr[2]);
+      else
+          return null;
+  }
+
+  function delCookie(name){
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      var cval=getCookie(name);
+      if(cval!=null)
+          document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+  }
+</script>
+</body>
+</html>

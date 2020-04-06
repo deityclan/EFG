@@ -1,0 +1,356 @@
+
+{extend name="index"/}
+{block name="title"}
+大学
+{/block}
+{block name="css"}
+<!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/efg/public/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/efg/public/static/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/efg/public/static/toast/toastr.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
+{/block}
+{block name="content"}
+
+<section class="content-header">
+  <h1>大学<small>列表</small></h1><!--需要改动：标题-->
+  <ol class="breadcrumb">
+    <li><button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#add-modal"><i class="glyphicon glyphicon-plus"></i>&nbsp;新增数据</button>  <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal-danger-multi"><i class="glyphicon glyphicon-trash"></i>&nbsp;批量删除</button></li>
+  </ol>
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="list" class="table table-bordered table-striped ">
+                        <thead>
+                            <tr>
+                              <th><input type="checkbox" id="check_all"/></th>
+                              <th>大学名称</th><!--需要改动，th-->
+                              <th>添加时间</th>
+                              <th>更新时间</th>
+                              <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody><!--需要改动volist-->
+                            {volist name="universitys" id="university" key="key"}
+                            <tr>
+                                <td><input type="checkbox" name="id" value="{$university->getData('university_id')}" /></td>
+                                <td>{$university->getData('university_name')}</td>
+                                <td>{$university->create_time}</td>
+                                <td>{$university->update_time}</td>
+                                <td><button class="btn btn-xs btn-primary edit-submit" data-id="{$university->getData('university_id')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</button>&nbsp;&nbsp;<button class="btn btn-danger btn-xs delete-button" data-id="{$university->getData('university_id')}" data-toggle="modal" data-target="#modal-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</button></td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--新增数据modal-->
+<div class="modal fade" id="add-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="add-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加新数据</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-success">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="col-sm-2"><label style="margin-top:6px">大学名称</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-10"><input type="text" class="form-control" name="university_name" placeholder="请输入大学名称" required="required"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-success add-submit">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--更新数据modal-->
+<div class="modal fade" id="update-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="update-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑数据</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" name="id" value="0">
+                                <div class="col-sm-2"><label style="margin-top:6px">大学名称</label></div><!--需要改动：表单的label，表单的name，表单的placeholder-->
+                                <div class="col-sm-10"><input type="text" class="form-control" name="university_name" placeholder="请输入大学名称" required="required"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left " data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary update-submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--删除数据提示modal-->
+<div class="modal modal-danger fade" id="modal-danger">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">危险操作提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除该条记录吗？</p>
+            </div>
+            <div class="modal-footer" style="border:none">
+                <input id="delete_id" type="hidden" value="" />
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline delete-submit">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--删除数据提示modal-->
+<div class="modal modal-danger fade" id="modal-danger-multi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">危险操作提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除多条记录吗？</p>
+            </div>
+            <div class="modal-footer" style="border:none">
+                <input id="delete_id" type="hidden" value="" />
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline multidelete-submit">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<!-- jQuery 3 -->
+<script src="/efg/public/static/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="/efg/public/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/efg/public/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/efg/public/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="/efg/public/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/efg/public/static/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/efg/public/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/efg/public/static/dist/js/demo.js"></script>
+
+<script src="/efg/public/static/toast/toastr.min.js"></script>
+<script>
+$(function () {
+    //初始化表格，需要改动：order属性从第几列开始排序
+    $('#list').DataTable({
+        "columnDefs":[{targets:0,"orderable":false}],
+        "order":[[2,'dsc']],
+        "iDisplayLength":15,
+        "aLengthMenu":[15,30,50,100],
+    });
+    //初始化toastr
+    toastr.options = {
+      "closeButton":false,
+      "debug":false,
+      "newestOnTop":false,
+      "progressBar":false,
+      "rtl":false,
+      "positionClass":"toast-top-center",
+      "preventDuplicates":false,
+      "onclick":null,
+      "showDuration":200,
+      "hideDuration":200,
+      "timeOut":1600,
+      "extendedTimeOut":200,
+      "showEasing":"swing",
+      "hideEasing":"linear",
+      "showMethod":"fadeIn",
+      "hideMethod":"fadeOut",
+    };
+})
+  
+//新增数据的ajax方法
+$(".add-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#add-form").serializeArray();
+    var data=serializeToObject(form_data);
+    $.ajax({
+        type : "POST",
+        url : "{:url('save')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已新增一条数据', '操作成功！')
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            }
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+})
+
+//删除事件的ajax方法
+$(".delete-button").click(function(){
+    $("#delete_id").val($(this).data("id"));
+})
+
+$(".delete-submit").click(function(){
+    var form_data=$("#delete_id").val();
+    var that=$("input[type='checkbox'][value='"+form_data+"']");
+    $("#modal-danger").modal("hide");
+    $.ajax({
+        type : "POST",
+        url : "{:url('delete')}",
+        data : {"id":form_data},
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已删除一条数据', '操作成功！');
+                that.parents("tr").remove();
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+$(".multidelete-submit").click(function(){
+    var ids = [];
+    $("input:checkbox[name=id]:checked").each(function(i){ 
+        ids.push( $(this).val() ); //当前被选中checkbox背后对应的值
+    })
+    
+    console.log(ids);
+    
+    $("#modal-danger-multi").modal("hide");
+    $.ajax({
+        type : "POST",
+        url : "{:url('multidelete')}",
+        data : {"ids":ids},
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已删除多条数据', '操作成功！');
+                $("input:checkbox[name=id]:checked").each(function(){ 
+                    
+                    $(this).parents("tr").remove();
+                })
+                
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+//编辑按钮的方法
+$(".edit-submit").click(function(){
+    var form_data=$(this).data("id");
+    $.ajax({
+        type : "POST",
+        url : "{:url('edit')}",
+        data : {"id":form_data},
+        success : function(result) {
+            if(result.code==1){
+                $("#update-form input[name='id']").val(result.data.university_id);
+                $("#update-form input[name='university_name']").val(result.data.university_name);
+                $("#update-modal").modal("show");
+            }else{
+                $(".fail-tip").text(result.msg);
+                $("#fail-modal-delete").modal("show");
+            } 
+        },
+        error : function(e){
+        }
+    });
+})
+
+//保存数据的ajax方法
+$(".update-submit").click(function(){
+    //从表单获取数据然后转换成json格式
+    var form_data=$("#update-form").serializeArray();
+    var data=serializeToObject(form_data);
+    $.ajax({
+        type : "POST",
+        url : "{:url('update')}",
+        data : data,
+        success : function(result) {
+            if(result.code==1){
+                toastr.success('您已更新一条数据', '操作成功！');
+                setTimeout(function(){location.reload()},700);
+            }else{
+                toastr.error(result.msg, '操作失败！');
+            }
+        },
+        error : function(e){
+        }
+    });
+})
+
+//批量删除的全选checkbox事件
+$("#check_all").click(function(){
+    if($(this).prop("checked")){
+        $("input[type='checkbox']").prop("checked",true);
+    }else{
+        $("input[type='checkbox']").prop("checked",false);
+    }
+})
+
+</script>
+
+{/block}
